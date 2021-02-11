@@ -1,0 +1,22 @@
+{
+  "name": "wavs_proxy",
+  "version": "1.0.0",
+  "description": "Proxy server for WAVS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tezansahu/WAVS.git"
+  },
+  "author": "tezan sahu, shreya laddha, saavi yadav, amol shah",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tezansahu/WAVS/issues"
+  },
+  "homepage": "https://github.com/tezansahu/WAVS#readme",
+  "dependencies": {
+    "http-proxy": "^1.18.1"
+  }
+}
