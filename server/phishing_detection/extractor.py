@@ -76,76 +76,30 @@ class WebsiteFeatureExtractor:
             "Iframe",
             "on_mouseover"
         ]
-        self.features = np.zeros(20)
+        self.features = np.zeros(20, dtype=int)
 
     def extract_features(self):
         # Extract all features & return the feature vector
-        start_time_0 = time.time()
-        start_time = start_time_0
         self.features[0] = self.checkSSLfinalState()
-        print("--- %.4f seconds ---" % (time.time() - start_time))
-        start_time = time.time()
         self.features[1] = self.checkUrlOfAnchor()
-        print("--- %.4f seconds ---" % (time.time() - start_time))
-        start_time = time.time()
         self.features[2] = self.checkLinksInTags()
-        print("--- %.4f seconds ---" % (time.time() - start_time))
-        start_time = time.time()
         self.features[3] = self.checkWebTraffic()
-        print("--- %.4f seconds ---" % (time.time() - start_time))
-        start_time = time.time()
         self.features[4] = self.checkPrefixSuffix()
-        print("--- %.4f seconds ---" % (time.time() - start_time))
-        start_time = time.time()
         self.features[5] = self.checkHavingSubdomain()
-        print("--- %.4f seconds ---" % (time.time() - start_time))
-        start_time = time.time()
         self.features[6] = self.checkSFH()
-        print("--- %.4f seconds ---" % (time.time() - start_time))
-        start_time = time.time()
         self.features[7] = self.checkRequestUrl()
-        print("--- %.4f seconds ---" % (time.time() - start_time))
-        start_time = time.time()
         self.features[8] = self.checkLinksPointingToPage()
-        print("--- %.4f seconds ---" % (time.time() - start_time))
-        start_time = time.time()
         self.features[9] = self.checkGoogleIndex()
-        print("--- %.4f seconds ---" % (time.time() - start_time))
-        start_time = time.time()
         self.features[10] = self.checkUrlLength()
-        print("--- %.4f seconds ---" % (time.time() - start_time))
-        start_time = time.time()
         self.features[11] = self.checkDNSRecord()
-        print("--- %.4f seconds ---" % (time.time() - start_time))
-        start_time = time.time()
         self.features[12] = self.checkDomainRegistrationLength()
-        print("--- %.4f seconds ---" % (time.time() - start_time))
-        start_time = time.time()
         self.features[13] = self.checkHavingIPAddress()
-        print("--- %.4f seconds ---" % (time.time() - start_time))
-        start_time = time.time()
         self.features[14] = self.checkHTTPSToken()
-        print("--- %.4f seconds ---" % (time.time() - start_time))
-        start_time = time.time()
         self.features[15] = self.checkPageRank()
-        print("--- %.4f seconds ---" % (time.time() - start_time))
-        start_time = time.time()
         self.features[16] = self.checkAgeOfDomain()
-        print("--- %.4f seconds ---" % (time.time() - start_time))
-        start_time = time.time()
         self.features[17] = self.checkPopUpWindow()
-        print("--- %.4f seconds ---" % (time.time() - start_time))
-        start_time = time.time()
         self.features[18] = self.checkIframe()
-        print("--- %.4f seconds ---" % (time.time() - start_time))
-        start_time = time.time()
         self.features[19] = self.checkOnMouseOver()
-        print("--- %.4f seconds ---" % (time.time() - start_time))
-        start_time = time.time()
-
-        print("======================\nOverall: %.4f seconds\n======================" % (time.time() - start_time_0))
-
-        # [TODO] Parallelize some of these to speed up the extraction process
 
         return self.features
         
@@ -204,7 +158,7 @@ class WebsiteFeatureExtractor:
     # 0. SSLfinal_State
     def checkSSLfinalState(self, url=None):
         hostname = ".".join(self.parseDomain(url)[1:])
-        reputed_issuers = ["IdenTrust", "DigiCert Inc", "Sectigo Limited", "GoDaddy.com, Inc.", "GlobalSign nv-sa", "Actalis S.p.A.", "(c) 2014 Entrust, Inc. - for authorized use only", "Let's Encrypt"]
+        reputed_issuers = ["IdenTrust", "DigiCert Inc", "Sectigo Limited", "GoDaddy.com, Inc.", "GlobalSign nv-sa", "Actalis S.p.A.", "Entrust, Inc.", "Let's Encrypt", "Google Trust Services", "Microsoft Corporation", "Amazon"]
         try:
             ctx = ssl.create_default_context()
             with ctx.wrap_socket(socket.socket(), server_hostname=hostname) as s:
@@ -421,7 +375,7 @@ class WebsiteFeatureExtractor:
     # 11. DNSRecord
     def checkDNSRecord(self, url=None):
         whois_response = self.getWhoisResponse(url)
-        if whois_response["domain_name"] == None:
+        if "domain_name" not in whois_response.keys() or whois_response["domain_name"] == None:
             return -1
         else:
             return 1
@@ -498,7 +452,7 @@ class WebsiteFeatureExtractor:
     def checkAgeOfDomain(self, url=None):
         if self.checkDNSRecord(url) == -1:
             return -1
-            
+
         whois_response = self.getWhoisResponse(url)
 
         # Obtain the domain creation date
