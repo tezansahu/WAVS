@@ -4,6 +4,7 @@ googlesearch-python==2020.0.2
 numpy==1.20.1
 scikit-learn==0.23.2
 pydantic==1.4
+python-dotenv==0.15.0
 python-whois==0.7.3
 requests==2.24.0
 tldextract==3.1.0

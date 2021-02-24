@@ -9,6 +9,7 @@ import whois
 import ipaddress
 from googlesearch import search
 from bs4 import BeautifulSoup
+from dotenv import load_dotenv
 
 import time
 
@@ -44,7 +45,9 @@ import time
 
 class WebsiteFeatureExtractor:
     def __init__(self, url):
-
+        
+        load_dotenv()
+        
         # Converts the given URL into standard format
         self.url = url
         if not re.match(r"^https?", url):
