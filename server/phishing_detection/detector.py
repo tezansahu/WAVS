@@ -25,11 +25,11 @@ class PhishingWebsiteDetector:
                 "result": res
             }
             
-            if res == "Phishing":
-                details = {}
-                for feature, val in zip(self.wfe.feature_names, feature_vec):
-                    details[feature] = self.interpretation[val]
-                response["details"] = details
+
+            details = {}
+            for feature, val in zip(self.wfe.feature_names, feature_vec):
+                details[feature] = self.interpretation[val]
+            response["details"] = details
             
             return response
         else:
@@ -42,9 +42,13 @@ class PhishingWebsiteDetector:
                 "Failed Prechecks": []
             }
         }
-        if len(self.wfe.soup.find_all(["html"])) == 0:
+        if self.wfe.soup == -999:
             res["passed"] = False
-            res["details"]["Failed Prechecks"].append("No HTML Tag")
+            res["details"]["Failed Prechecks"].append("Unable to fetch website")
+        else:
+            if len(self.wfe.soup.find_all(["html"])) == 0:
+                res["passed"] = False
+                res["details"]["Failed Prechecks"].append("No HTML Tag")
         
         return res
    

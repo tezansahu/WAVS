@@ -80,26 +80,66 @@ class WebsiteFeatureExtractor:
 
     def extract_features(self):
         # Extract all features & return the feature vector
+        # s = time.time()
         self.features[0] = self.checkSSLfinalState()
+        # print("%.4f s" % (time.time() - s))
+        # s=time.time()
         self.features[1] = self.checkUrlOfAnchor()
+        # print("%.4f s" % (time.time() - s))
+        # s=time.time()
         self.features[2] = self.checkLinksInTags()
+        # print("%.4f s" % (time.time() - s))
+        # s=time.time()
         self.features[3] = self.checkWebTraffic()
+        # print("%.4f s" % (time.time() - s))
+        # s=time.time()
         self.features[4] = self.checkPrefixSuffix()
+        # print("%.4f s" % (time.time() - s))
+        # s=time.time()
         self.features[5] = self.checkHavingSubdomain()
+        # print("%.4f s" % (time.time() - s))
+        # s=time.time()
         self.features[6] = self.checkSFH()
+        # print("%.4f s" % (time.time() - s))
+        # s=time.time()
         self.features[7] = self.checkRequestUrl()
+        # print("%.4f s" % (time.time() - s))
+        # s=time.time()
         self.features[8] = self.checkLinksPointingToPage()
+        # print("%.4f s" % (time.time() - s))
+        # s=time.time()
         self.features[9] = self.checkGoogleIndex()
+        # print("%.4f s" % (time.time() - s))
+        # s=time.time()
         self.features[10] = self.checkUrlLength()
+        # print("%.4f s" % (time.time() - s))
+        # s=time.time()
         self.features[11] = self.checkDNSRecord()
+        # print("%.4f s" % (time.time() - s))
+        # s=time.time()
         self.features[12] = self.checkDomainRegistrationLength()
+        # print("%.4f s" % (time.time() - s))
+        # s=time.time()
         self.features[13] = self.checkHavingIPAddress()
+        # print("%.4f s" % (time.time() - s))
+        # s=time.time()
         self.features[14] = self.checkHTTPSToken()
+        # print("%.4f s" % (time.time() - s))
+        # s=time.time()
         self.features[15] = self.checkPageRank()
+        # print("%.4f s" % (time.time() - s))
+        # s=time.time()
         self.features[16] = self.checkAgeOfDomain()
+        # print("%.4f s" % (time.time() - s))
+        # s=time.time()
         self.features[17] = self.checkPopUpWindow()
+        # print("%.4f s" % (time.time() - s))
+        # s=time.time()
         self.features[18] = self.checkIframe()
+        # print("%.4f s" % (time.time() - s))
+        # s=time.time()
         self.features[19] = self.checkOnMouseOver()
+        # print("%.4f s" % (time.time() - s))
 
         return self.features
         
@@ -116,7 +156,7 @@ class WebsiteFeatureExtractor:
 
         # Stores the response of the given URL
         try:
-            response = requests.get(url)
+            response = requests.get(url, timeout=2)
             soup = BeautifulSoup(response.text, 'html.parser')
         except Exception:
             response = ""
@@ -162,6 +202,7 @@ class WebsiteFeatureExtractor:
         try:
             ctx = ssl.create_default_context()
             with ctx.wrap_socket(socket.socket(), server_hostname=hostname) as s:
+                s.settimeout(5)
                 s.connect((hostname, 443))
                 cert = s.getpeercert()
             issuer = dict(x[0] for x in cert['issuer'])["organizationName"]
@@ -238,7 +279,7 @@ class WebsiteFeatureExtractor:
     def checkWebTraffic(self, url=None):
         url = url or self.url
         try:
-            r = requests.get('http://tools.mercenie.com/alexa-rank-checker/api/?format=json&urls=' + url)
+            r = requests.get('http://tools.mercenie.com/alexa-rank-checker/api/?format=json&urls=' + url, timeout=2)
             data = r.json()
             rank = int(data['alexaranks']['first']['alexarank']['0'])
 
@@ -332,7 +373,7 @@ class WebsiteFeatureExtractor:
         url = url or self.url
         try:
             data = {"urlo": url}
-            r = requests.post("http://tools.mercenie.com/moz-checker/", data=data)
+            r = requests.post("http://tools.mercenie.com/moz-checker/", data=data, timeout=2)
             soup = BeautifulSoup(r.text, 'html.parser')
 
             for row in soup.find_all("tr"):
@@ -388,12 +429,16 @@ class WebsiteFeatureExtractor:
         whois_response = self.getWhoisResponse(url)
         
         # Obtain the domain creation date
+        if "creation_date" not in whois_response.keys():
+            return -1
         if type(whois_response["creation_date"]) == datetime.datetime:
             creation_date = whois_response["creation_date"]
         elif type(whois_response["creation_date"]) == list:
             creation_date = whois_response["creation_date"][0]
         
         # Obtain the domain expiration date
+        if "expiration_date" not in whois_response.keys():
+            return -1
         if type(whois_response["expiration_date"]) == datetime.datetime:
             expiration_date = whois_response["expiration_date"]
         elif type(whois_response["expiration_date"]) == list:
@@ -438,7 +483,7 @@ class WebsiteFeatureExtractor:
         try:
             page_rank_url = "https://openpagerank.com/api/v1.0/getPageRank?domains[]=" + domain_name
             headers = {"API-OPR": os.getenv("OPR_API_KEY")}
-            r = requests.get(url, headers=headers).json()
+            r = requests.get(url, headers=headers, timeout=2).json()
             pr = float(r["response"][0]["page_rank_decimal"])/10
         except Exception:
             return -1
@@ -456,6 +501,8 @@ class WebsiteFeatureExtractor:
         whois_response = self.getWhoisResponse(url)
 
         # Obtain the domain creation date
+        if "creation_date" not in whois_response.keys():
+            return -1
         if type(whois_response["creation_date"]) == datetime.datetime:
             creation_date = whois_response["creation_date"]
         elif type(whois_response["creation_date"]) == list:
