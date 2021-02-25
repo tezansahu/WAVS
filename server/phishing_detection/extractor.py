@@ -201,7 +201,7 @@ class WebsiteFeatureExtractor:
     # 0. SSLfinal_State
     def checkSSLfinalState(self, url=None):
         hostname = ".".join(self.parseDomain(url)[1:])
-        reputed_issuers = ["IdenTrust", "DigiCert Inc", "Sectigo Limited", "GoDaddy.com, Inc.", "GlobalSign nv-sa", "Actalis S.p.A.", "Entrust, Inc.", "Let's Encrypt", "Google Trust Services", "Microsoft Corporation", "Amazon"]
+        reputed_issuers = ["IdenTrust", "DigiCert Inc", "Sectigo Limited", "GoDaddy.com, Inc.", "GlobalSign nv-sa", "Actalis S.p.A.", "Entrust, Inc.", "Google Trust Services", "Microsoft Corporation", "Amazon"]
         try:
             ctx = ssl.create_default_context()
             with ctx.wrap_socket(socket.socket(), server_hostname=hostname) as s:
@@ -310,11 +310,13 @@ class WebsiteFeatureExtractor:
 
         if "www" in subdomains:
             subdomains.remove("www")
-        
         if len(subdomains) == 0:
             return 1
         elif len(subdomains) == 1:
-            return 0
+            if subdomains[0] == "":
+                return 1
+            else:
+                return 0
         else:
             return -1
 
@@ -486,7 +488,7 @@ class WebsiteFeatureExtractor:
         try:
             page_rank_url = "https://openpagerank.com/api/v1.0/getPageRank?domains[]=" + domain_name
             headers = {"API-OPR": os.getenv("OPR_API_KEY")}
-            r = requests.get(url, headers=headers, timeout=2).json()
+            r = requests.get(page_rank_url, headers=headers, timeout=2).json()
             pr = float(r["response"][0]["page_rank_decimal"])/10
         except Exception:
             return -1
