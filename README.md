@@ -6,6 +6,8 @@
 
 WAVS (Web App Vulnerability Scanner) is a tool to scan & test URLs for certain vulnerabilities & security issues by simply inspecting the corresponding client-side website. The overall system would include a virtual server with modules for detecting the different vulnerabilities, along with a proxy server, to direct requests from a browser to the virtual server first while visiting a website. The proxy could warn the user before redirecting to the website if some vulnerabilities are found during the scan done by our virtual server.
 
+![WAVS Overview](./figures/WAVS_Overview.png)
+
 We intend to identify & assess the following security issues that a website may suffer from:
 
 - Absence of Valid TLS Certificates
@@ -13,11 +15,13 @@ We intend to identify & assess the following security issues that a website may 
 - Potential Phishing Attempts
 - Open Redirection
 
-## [Detailed Proposal](./Proposal.pdf)
+## [Detailed Proposal](./reports/Proposal.pdf)
 
 ## System Architecture
 
-![WAVS System Architecture](./figures/WAVS_SystemArchitecture.png)
+![WAVS System Architecture](./figures/WAVS_SystemArchitecture_new.png)
+
+## [Stage II Report](./reports/Stage2Report.pdf)
 
 ***
 
