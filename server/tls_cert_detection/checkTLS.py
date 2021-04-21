@@ -112,20 +112,20 @@ def check(domain,domain_certs,utcnow):
     alt_names.add(cert.get_subject().commonName)
     #print(alt_names)
     domainnames = set()
-    domainnames.add(domain)
-    print(domainnames)
+    domainnames.update([domain])
     unmatched = domainnames.difference(alt_names)
+    print(unmatched)
     if unmatched:
         msgs.append(
             ('info', "Alternate names in certificate: %s" % ', '.join(
                 sorted(alt_names, key=domain_key))))
         if len(domainnames) == 1:
             name = cert.get_subject().commonName
-            if name != domain.host:
+            if name != domain:
                 if name.startswith('*.'):
                     name_parts = name.split('.')[1:]
                     name_parts_len = len(name_parts)
-                    domain_host_parts = domain.host.split('.')
+                    domain_host_parts = domain.split('.')
                     if (len(domain_host_parts) - name_parts_len) == 1:
                         if domain_host_parts[-name_parts_len:] == name_parts:
                             return (msgs, earliest_expiration, result)
@@ -138,6 +138,11 @@ def check(domain,domain_certs,utcnow):
     elif domainnames == alt_names:
         msgs.append(
             ('info', "Alternate names match specified domains."))
+    else:
+        unmatched = alt_names.difference(domainnames)
+        msgs.append(
+            ('warning', "More alternate names than specified %s." % ', '.join(
+                sorted(unmatched, key=domain_key))))
 
     
     return (msgs, earliest_expiration, result)
@@ -170,6 +175,7 @@ def init(domain):
     domain = domain.replace("https://","")
     domain = domain.split('/')[0]
     domain_certs = get_domain_certs(domain)
+    #print(domain_certs)
     exceptions = list(x for x in domain_certs if isinstance(x, Exception))
     utcnow = datetime.datetime.now()
     (msgs, earliest_expiration, result) = check(domain,domain_certs,utcnow)
@@ -198,4 +204,4 @@ def main():
     output = init(domain)
     print(output)
 
-main()
+#main()
