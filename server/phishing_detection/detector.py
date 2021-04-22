@@ -30,31 +30,32 @@ class PhishingWebsiteDetector:
                 "prechecks": "passed",
                 "features": []
             }
-            for feature, val in zip(self.wfe.feature_names, feature_vec):
+            for feature, desc, val in zip(self.wfe.feature_names, self.wfe.feature_desc, feature_vec):
                 details["features"].append({
                     "feature": feature,
+                    "desc": desc,
                     "value": self.interpretation[val]
                 })
             response["details"] = details
             
             return response
         else:
-            return {"result": "Phishing", "details": {"prechecks": precheck_res["details"], "features": []}}
+            return {"result": "Phishing", "details": {"prechecks": "failed", "failed_prechecks": precheck_res["details"]["failed_prechecks"]}}
 
     def __prechecks(self):
         res = {
             "passed": True,
             "details": {
-                "Failed Prechecks": []
+                "failed_prechecks": []
             }
         }
         if self.wfe.soup == -999:
             res["passed"] = False
-            res["details"]["Failed Prechecks"].append("Unable to fetch website")
+            res["details"]["failed_prechecks"].append("Unable to fetch website")
         else:
             if len(self.wfe.soup.find_all(["html"])) == 0:
                 res["passed"] = False
-                res["details"]["Failed Prechecks"].append("No HTML Tag")
+                res["details"]["failed_prechecks"].append("No HTML Tag")
         
         return res
    
