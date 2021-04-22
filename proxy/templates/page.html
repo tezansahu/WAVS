@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap" rel="stylesheet">
+<style>
+* {
+  box-sizing: border-box;
+  font-family: 'RocknRoll One', sans-serif;
+}
+
+.column-img {
+  float: left;
+  width: 25%;
+  border: 30px;
+  height: 300px;
+  position: relative;
+  /* left: 10px; */
+  align-items: center;
+  text-align: center;
+  display: block;
+}
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 30px;
+  width: 80%;
+  height: 80%;
+}
+.column {
+  float: left;
+  width: 75%;
+  padding: 20px;
+  border: 30px;
+  height: 300px;
+  position: relative;
+}
+
+.row{
+    margin: 10px;
+}
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.bg-yellow {
+    background: #E3AE57;
+}
+
+.bg-skin {
+	background: #f1e2d7;
+}
+.bg-red {
+    background: #E9724C;
+}
+.text-white {
+	color: #FFF;
+}
+.text-dark {
+    color: #000000;
+}
+h2 {
+    text-align: center;
+}
+.heading {
+    text-align: center;
+}
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #888;
+  width: 80%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+  from {top:-300px; opacity:0} 
+  to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+  from {top:-300px; opacity:0}
+  to {top:0; opacity:1}
+}
+
+/* The Close Button */
+.close {
+  color: white;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-header {
+  padding: 2px 16px;
+  background-color: #E3AE57;
+  color: white;
+}
+
+.modal-body {padding: 2px 16px;}
+
+.modal-footer {
+  padding: 2px 16px;
+  background-color:  #E9724C;
+  color: white;
+}
+
+button {
+    display: inline-block;
+    /* width: ; */
+    transition: all 0.5s;
+    cursor: pointer;
+    /* margin: 5px; */
+}
+#proceed {
+    background-color:#000;
+    border-radius: 10px;
+    border: 3px double #000;
+    color: #f1e2d7;
+    text-align: center;
+    /* font-size: inherit; */
+    /* padding: 10px; */
+    padding-left: 20px;
+    padding-right: 20px;
+
+}
+#phish_param {
+    background-color:#E3AE57;
+    /* border-radius: 10px; */
+    border: 0px double #cccccc;
+    /* color: #eeeeee; */
+    text-align: left;
+    font-size: inherit;
+}
+button span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+button span:after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    right: -20px;
+    transition: 0.5s;
+}
+/* button:hover {
+background-color: #f7c2f9;
+} */
+button:hover span {
+    padding-right: 25px;
+}
+#proceed:hover span {
+    padding-left: 25px;
+}
+button:hover span:after {
+    opacity: 1;
+    right: 0;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+td, th {
+  border: 3px solid #f1e2d7;
+  text-align: center;
+  padding: 8px;
+}
+
+#footer {
+    position: absolute;
+    /* display: inline; */
+    padding: 10px 10px 0px 10px;
+    bottom: 20px;
+    width: 70%;
+    /* Height of the footer*/ 
+    height: 40px;
+    /* background: grey; */
+}
+p {
+    padding: 10px 10px 0px 10px;
+}
+</style>
+<title>Scan Results</title>
+</head>
+<body>
+
+<div class="heading"> 
+    <h1>Scan Results</h1>
+</div>
+
+
+<div class="row">
+  <div class="column-img">
+    <img src="../templates/img/phishing.jpeg" class="center">
+  </div>
+  <div class="column bg-yellow text-white" style="">
+    <h2>Potential Phishing Attempts</h2>
+    <p>Some text..</p>
+    
+    <!-- Trigger/Open The Modal -->
+    <button id="phish_param"><span class="text-white">Click here for detailed analysis</span></button> 
+    <div id="footer">Quick Links</div>     
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="column bg-red text-white" style="">
+    <h2>SSL/TLS Certificate Validation</h2>
+    <p>Some text..</p>
+    <div id="footer">Quick Links</div>
+  </div>
+  <div class="column-img">
+    <img src="../templates/img/tls.png"  class="center">
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="column-img">
+    <img src="../templates/img/or.jpeg" class="center">
+  </div>
+  <div class="column text-white" style="background-color:#000;">
+    <h2>Open Redirects</h2>
+    <p>Some text..</p>
+    <div id="footer">Quick Links</div>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="column bg-skin" style="">
+    <h2>Cross-Site Scripting (XSS)</h2>
+    <p>Some text..</p>
+    <div id="footer">Quick Links</div>
+  </div>
+  <div class="column-img">
+    <img src="../templates/img/xss.jpeg" class="center">
+  </div>
+</div>
+
+<div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content text-dark">
+      <div class="modal-header">
+        <span class="close">&times;</span>
+        <h2>Phishing Detection Parameters</h2>
+      </div>
+      <div class="modal-body">
+        <!-- <p>Some text in the Modal Body</p> -->
+        <table>
+            <tr>
+              <th>Paramter</th>
+              <th>Description</th>
+              <th>Status</th>
+            </tr>
+            <tr>
+                <td>Parameter1</td>
+            </tr>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <!-- <h3>M</h3> -->
+      </div>
+    </div>
+  
+</div>
+
+<div class="heading"> 
+    <button id="proceed"><span><h2>Proceed to url</h2></span></button>
+</div>
+
+<script>
+    // Get the modal
+    var modal = document.getElementById("myModal");
+    
+    // Get the button that opens the modal
+    var btn = document.getElementById("phish_param");
+    
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+    
+    // When the user clicks the button, open the modal 
+    btn.onclick = function() {
+      modal.style.display = "block";
+    }
+    
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
+    
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+    </script>
+
+</body>
+</html>
