@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap" rel="stylesheet">
+<style>
+* {
+  box-sizing: border-box;
+  font-family: 'RocknRoll One', sans-serif;
+}
+
+.heading {
+    text-align: center;
+    font-size: 40px;
+    /* margin: 0; */
+    text-shadow: 4px 4px #645f5f;
+}
+
+.subheading {
+    text-align: center;
+    /* text-shadow: 2px 1px #000; */
+    text-shadow: -1px 1px 0 #000,
+                          1px 1px 0 #000,
+                         1px -1px 0 #000,
+                        -1px -1px 0 #000;
+}
+.text-yellow {
+    color: #E3AE57;
+}
+
+.text-light {
+	color: #fdd0ad;
+}
+.text-red {
+    color: #E9724C;
+}
+.text-dark {
+    color: #000000;
+}
+
+.column {
+  float: left;
+  width: 100%;
+  padding: 30px;
+  position: relative;
+}
+
+
+</style>
+<title>Scan Results</title>
+</head>
+<body>
+
+<div class="heading"> 
+    <h1><span class="text-yellow">W</span>
+        <span class="text-red">A</span>
+        <span class="text-dark">V</span>
+        <span class="text-light">S</span></h1>
+</div>
+<div class="subheading">
+    <h2><span class="text-yellow">Potential Phishing Attempt</span>&emsp; &ensp;
+        <span class="text-red">SSL/TLS Certificate Validation</span>&emsp; &ensp;
+        <span class="text-dark">Open Redirects</span>&emsp; &ensp;
+        <span class="text-light">Cross-Site Scripting</span>
+    </h2>
+</div>
+
+<div class="column">
+    <h3>About :</h3>
+    <p>WAVS (Web App Vulnerability Scanner) is a tool to scan & test URLs forcertain vulnerabilities & 
+        security issues by simply inspecting the corresponding client-side website.The overall system includes a 
+        virtual server with modules for detecting the different vulnerabilities, along with a proxy server, to direct 
+        requests from a browser to the virtual server first while visiting a website. The proxy could warn the user before 
+        redirecting to the website if some vulnerabilities are found during the scan done by our virtual server.
+        <br><br>
+        We identify & assess the following security issues that a website may suffer from: Absence of Valid TLS Certificates, 
+        Cross-Site Scripting (XSS), Potential Phishing Attempts & Open Redirection</p>
+    <br>
+    <h3>Instructions for use :</h3>
+</div>
+</body>
+</html>
