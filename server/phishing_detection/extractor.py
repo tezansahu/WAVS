@@ -159,7 +159,7 @@ class WebsiteFeatureExtractor:
 
         # Stores the response of the given URL
         try:
-            response = requests.get(url, timeout=2)
+            response = requests.get(url, timeout=5)
             soup = BeautifulSoup(response.text, 'html.parser')
         except Exception:
             response = ""

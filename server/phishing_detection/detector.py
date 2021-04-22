@@ -26,14 +26,20 @@ class PhishingWebsiteDetector:
             }
             
 
-            details = {}
+            details = {
+                "prechecks": "passed",
+                "features": []
+            }
             for feature, val in zip(self.wfe.feature_names, feature_vec):
-                details[feature] = self.interpretation[val]
+                details["features"].append({
+                    "feature": feature,
+                    "value": self.interpretation[val]
+                })
             response["details"] = details
             
             return response
         else:
-            return {"result": "Phishing", "details": precheck_res["details"]}
+            return {"result": "Phishing", "details": {"prechecks": precheck_res["details"], "features": []}}
 
     def __prechecks(self):
         res = {
