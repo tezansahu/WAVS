@@ -150,10 +150,3 @@ class CertChecker:
         else: output["result"] = "Valid"
         
         return output
-    
-# def main():
-#     domain = sys.argv[1]
-#     output = init(domain)
-#     print(output)
-
-# main()
