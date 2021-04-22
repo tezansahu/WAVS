@@ -1,29 +1,9 @@
-const express = require('express');
 const hoxy = require('hoxy');
 const ejs = require('ejs');
 
 var server_port = 9000;
 var proxy_port = 8000;
 
-
-// Target server (to be implemented in FastAPI)
-let app = express();
-
-app.get('/scan', async function(req, res) {
-  let query_url = req.query.url;
-  console.log("Request received by Virtual Server. Query URL:", query_url);
-
-  res.writeHead(200, {'Content-Type': 'application/json'});
-  res.write(JSON.stringify({"url": query_url}));
-  res.end();
-});
-
-app.listen(server_port, function() {
-  console.log('Virtual Server is listening on port', server_port);
-});
-
-//////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////
 
 // Proxy server to direct requests to Virtual Server
 var proxy = hoxy.createServer().listen(proxy_port, function() {
@@ -47,12 +27,18 @@ proxy.intercept({
   phase: 'request'
 }, (req, res) => {
   query_url = req.url.slice(1);
-  console.log("Request intercepted by proxy. Query URL:", query_url);
   
   // Modify the request to call the required endpoint with correct query param
+  req.method = 'POST';
   req.hostname = 'localhost';         // Domain of Virtual Server
   req.port = server_port;             // Port on which Virtual Server is running
-  req.url = '/scan?url=' + query_url  // Appropriate endpoint on Virtual Server
+  req.url = '/v1/scan/?url=' + query_url  // Appropriate endpoint on Virtual Server
+  req.json = {
+    tls_cert: true,
+    xss: true,
+    phishing: true,
+    open_redirect: true
+  }
 })
 
 //////////////////////////////////////////////////////////////////////////////////////////
