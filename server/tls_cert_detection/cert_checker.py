@@ -81,10 +81,14 @@ class CertChecker:
                     earliest_expiration = expires
             issued_level = "info"
             issuer = cert.get_issuer().commonName
-            if issuer.lower() == "happy hacker fake ca":
-                issued_level = "error"
-            msgs.append((issued_level, "Issued by: %s" % issuer))
+            if issuer:
+                if issuer.lower() == "happy hacker fake ca":
+                    issued_level = "error"
+            else:
+                issued_level = 'warning'    
+            msgs.append((issued_level, "Issued by: %s (subject: %s)" % (issuer, subject)))
             result["issuer"] = issuer
+
             results.append(result)
 
             if i < len(domain_certs) - 1:
