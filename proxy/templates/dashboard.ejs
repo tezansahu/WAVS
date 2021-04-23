@@ -313,7 +313,7 @@ a {
     <h2>Open Redirects</h2>
     
     <% if (open_redir.result === "Not Vulnerable") { %>
-        <p><i class="material-icons" style="color: green; ">done</i> <b>Not Vulnerable:</b> This website has not been identified with any Open Redirect vulnerabilities</p>
+        <p><i class="material-icons" style="color: rgb(75, 255, 75); ">done</i> <b>Not Vulnerable:</b> This website has not been identified with any Open Redirect vulnerabilities</p>
     <% } else if (open_redir.result === "Header Based Redirection" || open_redir.result === "Open Redirection") { %>
       <p><i class="material-icons" style="color: red; ">dangerous</i> <b>Vulnerability Detected:</b> This website has been identified with <i><%= open_redir.result %></i> </p>
 
@@ -346,7 +346,7 @@ a {
 </div>
 <% } %>  
 
-<% if (locals.phishing) { %>
+<!-- <% if (locals.phishing) { %> -->
 <div id="phish_modal" class="modal">
 
     <!-- Modal content -->
@@ -386,9 +386,9 @@ a {
       </div>
     </div> 
 </div>
-<% } %>  
+<!-- <% } %>   -->
 
-<% if (locals.tls_cert) { %>
+<!-- <% if (locals.tls_cert) { %> -->
 <div id="tls_modal" class="modal">
 
     <!-- Modal content -->
@@ -441,13 +441,14 @@ a {
     </div>
   </div>
 </div>
-<% } %>
+<!-- <% } %> -->
 
 <div class="heading">
     <br>
     <button id="proceed"><span><a target="_blank" style="color: #fff; text-decoration: none;" href="<%= url %>"><h2>Proceed to URL</h2></a></span></button>
 </div>
 
+<% if (locals.phishing) { %>
 <script>
     /////////////////////// Phishing Modal ///////////////////////////
     // Get the modal
@@ -475,7 +476,11 @@ a {
         phish_modal.style.display = "none";
       }
     }
+</script>
+<% } %>
 
+<% if (locals.tls_cert) { %>
+<script>
     //////////////////////// TLS Modal //////////////////////////////
     var tls_modal = document.getElementById("tls_modal");
     
@@ -502,6 +507,7 @@ a {
       }
     }
 </script>
+<% } %>
 
 </body>
 </html>

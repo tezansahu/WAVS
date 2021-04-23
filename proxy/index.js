@@ -1,6 +1,48 @@
 const hoxy = require('hoxy');
 const ejs = require('ejs');
 const fs = require('fs');
+const { program } = require('commander');
+
+program
+  .option('-s, --scan <type>', 'Scan Type ("full" or "selective")', 'full')
+  .option('-t, --tls_cert', 'Enable scan for SSL/TLS Certificates')
+  .option('-x, --xss', 'Enable scan for Cross-Site Scripting')
+  .option('-p, --phishing', 'Enable scan for potential Phishing')
+  .option('-o, --open_redirect', 'Enable scan for Open Redirects')  
+
+program.parse(process.argv);
+const options = program.opts();
+
+scan_options = {
+  tls_cert: false,
+  xss: false,
+  phishing: false,
+  open_redirect: false
+};
+
+if (options.scan === 'full') {
+  scan_options = {
+    tls_cert: true,
+    xss: true,
+    phishing: true,
+    open_redirect: true
+  }
+}
+else if (options.scan === 'selective') {
+  if (options.tls_cert) {
+    scan_options["tls_cert"] = true;
+  }
+  if (options.xss) {
+    scan_options["xss"] = true;
+  }
+  if (options.phishing) {
+    scan_options["phishing"] = true;
+  }
+  if (options.open_redirect) {
+    scan_options["open_redirect"] = true;
+  }
+}
+
 
 homepage_str = "";
 
@@ -44,12 +86,7 @@ proxy.intercept({
   req.hostname = 'localhost';         // Domain of Virtual Server
   req.port = server_port;             // Port on which Virtual Server is running
   req.url = '/v1/scan/?url=' + query_url  // Appropriate endpoint on Virtual Server
-  req.json = {
-    tls_cert: true,
-    xss: true,
-    phishing: true,
-    open_redirect: true
-  }
+  req.json = scan_options
 })
 
 //////////////////////////////////////////////////////////////////////////////////////////

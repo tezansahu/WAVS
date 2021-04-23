@@ -40,5 +40,4 @@ def vulnerablity_scan(url: str, options: ScanOptions):
     if options.open_redirect:
         ord_res = or_d.detect_or(url)
         response["open_redir"] = ord_res
-    
     return response
