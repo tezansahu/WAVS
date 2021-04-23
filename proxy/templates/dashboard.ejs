@@ -168,6 +168,18 @@ button {
     font-size: inherit;
 }
 
+#xss_details {
+    background-color:#c9b4a5;
+
+    border: 2px double;
+    border-color: #121212;;
+    border-radius: 5px;
+    padding: 5pt;
+    color: #121212;
+    text-align: center;
+    font-size: inherit;
+}
+
 #tls_cert_details {
     background-color:#b85230;
     /* border-radius: 10px; */
@@ -335,10 +347,18 @@ a {
 
 <% if (locals.xss) { %>
 <div class="row">
-  <div class="column bg-skin" style="">
+  <div class="column bg-skin" style="text-align: center;">
     <h2>Cross-Site Scripting (XSS)</h2>
-    <p>Some text..</p>
-    <div id="footer">Quick Links</div>
+    <% if (xss.result === "XSS Not Detected") { %>
+        <p><i class="material-icons" style="color: green; ">done</i> <b><%= xss.result %>:</b> This website has no identifiable client-side XSS vulnerabilities</p>
+    <% } %>
+    <% if (xss.result === "XSS Detected") { %>
+        <p><i class="material-icons" style="color: red;">dangerous</i> <b><%= xss.result %>:</b> <i>DOM-based XSS</i> vulnerability has been detected in this website</p>
+        <button id="xss_details"><span>Click here for Details</span></button>
+    <% } %>
+    <div id="footer">
+      <b>Quick Links:</b> <a style="color: #121212;" target="_blank" href="https://portswigger.net/web-security/cross-site-scripting">Types of XSS</a> | <a style="color: #121212;" target="_blank" href="https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html">XSS Prevention</a>
+    </div>
   </div>
   <div class="column-img">
     <img src="https://i.ibb.co/C83FMKp/xss.jpg" class="center">
@@ -346,7 +366,7 @@ a {
 </div>
 <% } %>  
 
-<!-- <% if (locals.phishing) { %> -->
+<% if (locals.phishing) { %>
 <div id="phish_modal" class="modal">
 
     <!-- Modal content -->
@@ -386,9 +406,9 @@ a {
       </div>
     </div> 
 </div>
-<!-- <% } %>   -->
+<% } %>  
 
-<!-- <% if (locals.tls_cert) { %> -->
+<% if (locals.tls_cert) { %>
 <div id="tls_modal" class="modal">
 
     <!-- Modal content -->
@@ -441,7 +461,49 @@ a {
     </div>
   </div>
 </div>
-<!-- <% } %> -->
+<% } %>
+
+
+<% if (locals.xss) { %>
+  <div id="xss_modal" class="modal">
+  
+      <div class="modal-content text-dark">
+        <div class="modal-header">
+          <span class="close" id="xss_modal_close">&times;</span>
+          <h2>XSS Details</h2>
+        </div>
+        <div class="modal-body" style="text-align: center; padding-top: 10px">
+          
+          <h3>Details of the Forms detected with XSS Vulnerability:</h3>
+          <% for (let i = 0; i < xss.details.length; i++) { %>
+            <table>
+              <tr>
+                <th>Element Name</th>
+                <th>Element Type</th>
+                <th>Value Injected</th>
+              </tr>
+              <% for (let j = 0; j < xss.details[i].inputs.length; j++) { %>
+                <% if (xss.details[i].inputs[j].name) { %>
+                  <tr>
+                    <td><%= xss.details[i].inputs[j].name %></td>
+                    <td><%= xss.details[i].inputs[j].type %></td>
+                    <td><%= xss.details[i].inputs[j].value %></td>
+                  </tr>
+                <% } %>
+              <% } %>
+            </table>
+            <br/>
+            <p><b>Form Action:</b> <%= xss.details[i].action %></p>
+            <p><b>Form Submission Method:</b> <%= xss.details[i].method %></p>
+            <br/>
+            <hr/>
+          <% } %>
+        </div>
+        <div class="modal-footer"> 
+      </div>
+    </div>
+  </div>
+  <% } %>
 
 <div class="heading">
     <br>
@@ -508,6 +570,36 @@ a {
     }
 </script>
 <% } %>
+
+<% if (locals.xss) { %>
+  <script>
+      //////////////////////// XSS Modal //////////////////////////////
+      var xss_modal = document.getElementById("xss_modal");
+      
+      // Get the button that opens the modal
+      var xss_btn = document.getElementById("xss_details");
+      
+      // Get the <span> element that closes the modal
+      var xss_modal_close = document.getElementById("xss_modal_close");
+      
+      // When the user clicks the button, open the modal 
+      xss_btn.onclick = function() {
+          xss_modal.style.display = "block";
+      }
+      
+      // When the user clicks on <span> (x), close the modal
+      xss_modal_close.onclick = function() {
+          xss_modal.style.display = "none";
+      }
+      
+      // When the user clicks anywhere outside of the modal, close it
+      window.onclick = function(event) {
+        if (event.target == xss_modal) {
+          xss_modal.style.display = "none";
+        }
+      }
+  </script>
+  <% } %>
 
 </body>
 </html>

@@ -112,9 +112,11 @@ class XSSDetector:
                         return_val["details"].append(form)
             if first == True: 
                 return_val["result"] = "XSS Not Detected"
+                return_val["details"] = []
                     
         else: 
             return_val["result"] = "XSS Not Detected"
+            return_val["details"] = []
 
         return return_val
 
