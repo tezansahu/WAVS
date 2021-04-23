@@ -1,0 +1,2 @@
+<script>alert("XSS Vulnerable")</script>
+<iframe src="javascript:alert(`xss`)">
