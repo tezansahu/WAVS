@@ -79,6 +79,28 @@ class WebsiteFeatureExtractor:
             "Iframe",
             "on_mouseover"
         ]
+        self.feature_desc = [
+            "Checks the age & issuer of SSL Certificate for website",
+            "% of URLs in pointing to different domains or not to any webpage",
+            "% of links in <script>, <link> & <meta> tags with different domains",
+            "Popularity of a website using ranks from the Alexa database",
+            "Prefixes or suffixes separated by (-) to the domain name",
+            "Existence of multiple subdomains in the URL",
+            "Check if the Server Form Handler has about:blank",
+            "% of external objects within a webpage loaded from different domain",
+            "Number of backlinks pointing to the page",
+            "Check if the page is in Google's index or not",
+            "Length of the URL (longish URLs are considered phishy)",
+            "Existence of a DNS record for the webpage in the WHOIS database",
+            "Registration period of domain & time until expiration",
+            "Presence of an IP address (decimal/hex) in the domain part of URL",
+            "Existence of HTTPS Token in the Domain Part of the URL",
+            "Google's PageRank value for a webpage",
+            "Time since creation of domain name of the website",
+            "Existence of popups such as prompt() or alert() in the webpage",
+            "Presence of <iframe> in a webpage to display additional webpages",
+            "Use of onmouseover() event to change address bar contents"
+        ]
         self.features = np.zeros(20, dtype=int)
 
     def extract_features(self):

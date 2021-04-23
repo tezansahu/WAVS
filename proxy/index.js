@@ -1,5 +1,15 @@
 const hoxy = require('hoxy');
 const ejs = require('ejs');
+const fs = require('fs');
+
+homepage_str = "";
+
+fs.readFile("./templates/homepage.html", (error, data) => {
+  if(error) {
+      throw error;
+  }
+  homepage_str = data.toString();
+});
 
 var server_port = 9000;
 var proxy_port = 8000;
@@ -19,7 +29,8 @@ proxy.intercept({
 }, (req, res) => {
   res.headers = {'Content-Type': 'text/html'};
   res.statusCode = 200;
-  res.string = "<html><body><h2>Landing Page!</h2></body></html>";
+  // res.string = "<html><body><h2>Landing Page!</h2></body></html>";
+  res.string = homepage_str;
 })
 
 // For all other requests, redirect to virtual server
@@ -48,14 +59,14 @@ proxy.intercept({
   phase: 'response', 
   as: 'json'
 }, async (req, res) => {
-  console.log("Response intercepted by proxy:", res.json)
+  // console.log("Response intercepted by proxy:", res.json)
 
   // Use JSON to manipulate template...
-  html_str = await ejs.renderFile("template.ejs", res.json);
+  html_str = await ejs.renderFile("templates/dashboard.ejs", res.json);
 
   // Now return the filled template
   res.headers = {'Content-Type': 'text/html'};
   res.statusCode = 200;
   res.string = html_str;
-  console.log("Modified Response:", res.string, "\n=====================================================")
+  // console.log("Modified Response:", res.string, "\n=====================================================")
 })
