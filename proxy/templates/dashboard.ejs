@@ -234,6 +234,11 @@ p {
 i {
     vertical-align: middle;
 }
+
+a {
+  color: #eee;
+  text-decoration: none;
+}
 </style>
 
 <title>WAVS Scan Results</title>
@@ -247,7 +252,7 @@ i {
 
 
 
-
+<% if (locals.phishing) { %>
 <div class="row">
     <div class="column-img">
       <img src="https://i.ibb.co/rtpgqVD/phishing.jpg" class="center">
@@ -268,12 +273,13 @@ i {
       <!-- Trigger/Open The Modal -->
         <button id="phish_param"><span class="text-white">Click here for Detailed Analysis</span></button> 
         <div id="footer" style="text-align: center;">
-            <b>Quick Links:</b> <a href="https://www.imperva.com/learn/application-security/phishing-attack-scam">Introduction to Phishing Attacks</a> | <a href="https://www.globalsign.com/en/blog/how-to-spot-a-fake-website">How to Spot a Phishing Website</a>
+            <b>Quick Links:</b> <a target="_blank" href="https://www.imperva.com/learn/application-security/phishing-attack-scam">Introduction to Phishing Attacks</a> | <a target="_blank" href="https://www.globalsign.com/en/blog/how-to-spot-a-fake-website">How to Spot a Phishing Website</a>
         </div>      
     </div>
-  </div>
+</div>
+<% } %>
 
-
+<% if (locals.tls_cert) { %>
 <div class="row">
   <div class="column bg-red text-white" style="text-align: center;">
     <h2>SSL/TLS Certificate Validation</h2>
@@ -281,7 +287,7 @@ i {
         <p><i class="material-icons" style="color: green; ">done</i> <b>Valid:</b> This website possesses a valid SSL/TLS certificate</p>
     <% } %>
     <% if (tls_cert.result === "Valid (with Warnings)") { %>
-        <p><i class="material-icons" style="color: yellow; ">error</i> <b>Valid (with Warnings):</b> This website has valid SSL/TLS certificate, but it will expire soon</p>
+        <p><i class="material-icons" style="color: yellow; ">error</i> <b>Valid (with Warnings):</b> This website has valid SSL/TLS certificate, but the issuing authority or expiry may be questionable</p>
     <% } %>
     <% if (tls_cert.result === "Invalid") { %>
         <p><i class="material-icons" style="color: red; -webkit-text-stroke: 0.5px rgb(0, 0, 0);">dangerous</i> <b>Invalid:</b> This website does not have valid SSL/TLS certificate</p>
@@ -289,27 +295,45 @@ i {
 
     <button id="tls_cert_details"><span class="text-white">Click here for Certificate Details</span></button> 
     <div id="footer">
-        <b>Quick Links:</b> <a href="https://protonmail.com/blog/tls-ssl-certificate/">Working of SSL/TLS Certificates</a> | <a href="https://www.venafi.com/blog/how-do-certificate-chains-work">Certificate Chains</a>
+        <b>Quick Links:</b> <a target="_blank" href="https://protonmail.com/blog/tls-ssl-certificate/">Working of SSL/TLS Certificates</a> | <a target="_blank" href="https://www.venafi.com/blog/how-do-certificate-chains-work">Certificate Chains</a>
     </div>
   </div>
   <div class="column-img">
     <img src="https://i.ibb.co/W3rfyHc/tls.png"  class="center">
   </div>
 </div>
+<% } %>
 
-
+<% if (locals.open_redir) { %>
 <div class="row">
   <div class="column-img">
     <img src="https://i.ibb.co/RDWx8Gs/or.jpg" class="center">
   </div>
-  <div class="column text-white" style="background-color:#000;">
+  <div class="column text-white" style="background-color:#000; text-align: center;">
     <h2>Open Redirects</h2>
-    <p>Some text..</p>
-    <div id="footer">Quick Links</div>
+    
+    <% if (open_redir.result === "Not Vulnerable") { %>
+        <p><i class="material-icons" style="color: green; ">done</i> <b>Not Vulnerable:</b> This website has not been identified with any Open Redirect vulnerabilities</p>
+    <% } else if (open_redir.result === "Header Based Redirection" || open_redir.result === "Open Redirection") { %>
+      <p><i class="material-icons" style="color: red; ">dangerous</i> <b>Vulnerability Detected:</b> This website has been identified with <i><%= open_redir.result %></i> </p>
+
+      <% if (open_redir.result === "Header Based Redirection") { %>
+        <p><b>Query Parameter for Redirection:</b> <%= open_redir.details.parameter %></p>
+      <% } %>
+    <% } else { %>
+      <p><i class="material-icons" style="color: yellow; ">error</i> <b>Client Error:</b> <i><%= open_redir.result %></i> </p>
+    <% } %>  
+
+
+
+    <div id="footer">
+      <b>Quick Links:</b> <a target="_blank" href="https://portswigger.net/kb/issues/00500100_open-redirection-reflected">Open Redirect (Reflected)</a> | <a target="_blank" href="https://blog.detectify.com/2019/05/16/the-real-impact-of-an-open-redirect/">Impact of Open Redirects</a>
+    </div>
   </div>
 </div>
+<% } %>  
 
-
+<% if (locals.xss) { %>
 <div class="row">
   <div class="column bg-skin" style="">
     <h2>Cross-Site Scripting (XSS)</h2>
@@ -320,7 +344,9 @@ i {
     <img src="https://i.ibb.co/C83FMKp/xss.jpg" class="center">
   </div>
 </div>
+<% } %>  
 
+<% if (locals.phishing) { %>
 <div id="phish_modal" class="modal">
 
     <!-- Modal content -->
@@ -358,10 +384,11 @@ i {
       <div class="modal-footer">
         <!-- <h3>M</h3> -->
       </div>
-    </div>
-  
+    </div> 
 </div>
+<% } %>  
 
+<% if (locals.tls_cert) { %>
 <div id="tls_modal" class="modal">
 
     <!-- Modal content -->
@@ -409,19 +436,16 @@ i {
                 <% } %>
             <% } %>
         </div>
-
-        
-        
       </div>
-      <div class="modal-footer">
-        
-      </div>
+      <div class="modal-footer"> 
     </div>
-  
+  </div>
 </div>
+<% } %>
 
-<div class="heading"> 
-    <button id="proceed"><span><h2>Proceed to url</h2></span></button>
+<div class="heading">
+    <br>
+    <button id="proceed"><span><a target="_blank" style="color: #fff; text-decoration: none;" href="<%= url %>"><h2>Proceed to URL</h2></a></span></button>
 </div>
 
 <script>
