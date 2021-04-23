@@ -7,7 +7,7 @@ import v1
 app = FastAPI()
 
 app.add_middleware(
-    CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"]
+    CORSMiddleware, allow_origins=["http://localhost:8000"], allow_methods=["*"], allow_headers=["*"]
 )
 
 @app.get("/", tags=["root"])

@@ -2,6 +2,7 @@ import requests
 from pprint import pprint
 from bs4 import BeautifulSoup as bs
 from urllib.parse import urljoin
+import os
 
 class XSSDetector:
     def __init__(self):
@@ -14,8 +15,12 @@ class XSSDetector:
 
     def get_all_forms(self): 
         # Returns forms from the static website
-        soup = bs(requests.get(self.url).content, "html.parser")
-        form_tag = soup.find_all("form")
+        try:
+            res = requests.get(self.url, timeout=5).content
+            soup = bs(res, "html.parser")
+            form_tag = soup.find_all("form")
+        except Exception:
+            form_tag = []
         return form_tag
 
     def get_form_details(self,form):
@@ -76,7 +81,7 @@ class XSSDetector:
         """
         forms = self.get_all_forms()
         # print(f"[+] Detected {len(forms)} forms on {url}.")
-        with open (r"payload_basic.txt") as x:
+        with open (os.path.join(os.path.dirname(__file__), "payload_basic.txt")) as x:
             return_details = []
             # is_vulnerable = False
             for form in forms:
@@ -100,23 +105,23 @@ class XSSDetector:
             for form in return_details:
                 if form["vulnerable"] == True:
                     if first: 
-                        return_val["Detection"] = f"[+] XSS Detected on {self.url}"
-                        return_val["Details"] = [form]
+                        return_val["result"] = "XSS Detected"
+                        return_val["details"] = [form]
                         first = False
                     else: 
-                        return_val["Details"].append(form)
+                        return_val["details"].append(form)
             if first == True: 
-                return_val["Detection"] = f"[+] XSS Not Detected on {self.url}"
+                return_val["result"] = "XSS Not Detected"
                     
         else: 
-            return_val["Detection"] = f"[+] XSS Not Detected on {self.url}"
+            return_val["result"] = "XSS Not Detected"
 
         return return_val
 
 def xss_main():
     # url = "https://xss-game.appspot.com/level1/frame"
-    url = "https://bugslayers-cs416-open-redirect.herokuapp.com/"
-    # url = "https://www.google.com/"
+    # url = "https://bugslayers-cs416-open-redirect.herokuapp.com/"
+    url = "https://www.google.com/"
     obj = XSSDetector()
     print(obj.detect_xss(url)) 
 
