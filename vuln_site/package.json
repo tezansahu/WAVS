@@ -1,0 +1,18 @@
+{
+  "name": "vuln_site",
+  "version": "1.0.0",
+  "description": "",
+  "main": "vuln_site.js",
+  "scripts": {
+    "start": "node vuln_site.js"
+  },
+  "author": "Tezan Sahu",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.1"
+  },
+  "engines": {
+    "node": "13.8.0"
+  }
+}

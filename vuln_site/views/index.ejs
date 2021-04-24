@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WAVS Vulnerable Site</title>
+    <!-- CSS (load bootstrap from a CDN) -->
+</head>
+
+<body>
+    <h1>WAVS Vunerable Webite</h1>
+
+    This is a dummy website containing some of the vulnerabilities that are detected by <a href="https://github.com/tezansahu/WAVS">WAVS (Web App Vulnerability Scanner)</a>, created by Team BugSlayers for CS416 Project.
+
+    <h2>Open Redirect</h2>
+    <p>This dummy website contains an Open Redirect Vulnerability. To check it, do the following:</p>
+    <p>Try adding a <b>'?url=&lt;your-favorite-url&gt;'</b> in the address bar to see the result </p>
+
+    <br/>
+
+    <h2>Cross-Site Scripting (XSS)</h2>
+    <p>Following is an example of an input box that has the XSS vulnerability. To check it, do the following:</p>
+    <p>Enter some HTML tags in the searchbox & see how the result changes. Now, try to input some script to such as <b>'&lt;script&gt;alert("Hi")&lt;/script&gt;'</b>' & search</p>
+
+
+    <form action="/search" method="GET">
+        <input id="query" name="query" value="Enter query here...(vulnerable to XSS)"
+            onfocus="this.value=''">
+        <input id="button" type="submit" value="Search">
+    </form>
+
+    <% if (locals.search_res) { %>
+        <p><%- search_res %></p>
+    <% } %>
+</body>
+</html>
