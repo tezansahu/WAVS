@@ -64,7 +64,7 @@ After performing a scan, WAVS displays a dashboard containing details about the 
 
 <div style="text-align: center;">
 
-   <img src="./figures/dashboard/vuln_website_scan.png" width="80%">
+   <img src="./figures/dashboard/vuln_website_scan.png" width="96%">
 
    <img src="./figures/dashboard/cert_details.png" width="48%">
 
@@ -75,7 +75,7 @@ After performing a scan, WAVS displays a dashboard containing details about the 
 
 ## Vulnerable (Dummy) Website
 
-To demonstrate the full capacity of WAVS at once, we created a dummy website, withsome inherent vulnerabilities that WAVS can detect:
+To demonstrate the full capacity of WAVS at once, we created a dummy website, with some inherent vulnerabilities that WAVS can detect:
 
 - **Open Redirect** vulnerability was introduced by allowing redirects to any URL if mentioned as the `?url=` query parameter in the address
 - **Cross-Site Scripting** has  been  introduced  through  a  small  vulnerable  form,  which  allows JavaScript code input & executes it on the browser
