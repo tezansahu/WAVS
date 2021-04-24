@@ -3,6 +3,7 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <style>
 * {
   box-sizing: border-box;
@@ -12,17 +13,20 @@
 .heading {
     text-align: center;
     font-size: 40px;
+    margin-bottom: 0;
     /* margin: 0; */
     text-shadow: 4px 4px #645f5f;
 }
 
 .subheading {
     text-align: center;
+    margin-top: -20pt;
+    -webkit-text-stroke: 0.05px #454545;
     /* text-shadow: 2px 1px #000; */
-    text-shadow: -1px 1px 0 #000,
+    /* text-shadow: -1px 1px 0 #000,
                           1px 1px 0 #000,
                          1px -1px 0 #000,
-                        -1px -1px 0 #000;
+                        -1px -1px 0 #000; */
 }
 .text-yellow {
     color: #E3AE57;
@@ -39,19 +43,23 @@
 }
 
 .column {
-  float: left;
-  width: 100%;
-  padding: 30px;
-  position: relative;
+  /* float: center; */
+  /* width: 90%; */
+  margin: 0 50px 20px 50px;
+  padding: 20px;
+  /* position: relative; */
+  background-color: #fdd0ad;
+  border-radius: 5px;
+
 }
 
 
 </style>
-<title>Scan Results</title>
+<title>WAVS</title>
 </head>
 <body>
 
-<div class="heading"> 
+<div class="heading" style="margin-top:-40px"> 
     <h1><span class="text-yellow">W</span>
         <span class="text-red">A</span>
         <span class="text-dark">V</span>
@@ -65,18 +73,37 @@
     </h2>
 </div>
 
-<div class="column">
-    <h3>About :</h3>
-    <p>WAVS (Web App Vulnerability Scanner) is a tool to scan & test URLs forcertain vulnerabilities & 
-        security issues by simply inspecting the corresponding client-side website.The overall system includes a 
-        virtual server with modules for detecting the different vulnerabilities, along with a proxy server, to direct 
-        requests from a browser to the virtual server first while visiting a website. The proxy could warn the user before 
-        redirecting to the website if some vulnerabilities are found during the scan done by our virtual server.
-        <br><br>
-        We identify & assess the following security issues that a website may suffer from: Absence of Valid TLS Certificates, 
-        Cross-Site Scripting (XSS), Potential Phishing Attempts & Open Redirection</p>
-    <br>
-    <h3>Instructions for use :</h3>
+<div style="align-items: center; width: 100%; justify-content: center;">
+    <div class="column">
+        <h3 style="margin-top: 0">About:</h3>
+        <p style="font-size: 11pt">
+            <b>WAVS (Web App Vulnerability Scanner)</b> is a tool to scan & test URLs for certain vulnerabilities & 
+            security issues by simply inspecting the corresponding client-side website. The overall system includes a 
+            virtual server with modules for detecting the different vulnerabilities, along with a proxy server, to direct 
+            requests from a user's browser to the WAVS virtual server to scan the URL for potential threats & return a 
+            dashboard containing the scan results.
+            <br><br>
+            WAVS scans & detects the following security issues in a website: Absence of Valid SSL/TLS Certificates, 
+            Cross-Site Scripting (XSS), Potential Phishing Attempts & Open Redirection</p>
+    </div>
+    <div class="column" >
+        <h3 style="margin-top: 0">Instructions for Use:</h3>
+        <p style="font-size: 11pt">
+            To perform a scan for any URL, just append '<b>/&lt;URL&gt;</b>' to the proxy address in the address bar. 
+            <br>
+            <i>(For example, if you wish to perform a scan for 'https://google.co.in', you can append '/https://google.co.in' 
+            to the address bar)</i>
+            
+            <br/><br/>
+
+            WAVS will perform the scan within 10-20 s & return a dashboard containing the details of the potential vulnerabilities in the website.
+        </p>
+    </div>
 </div>
+
+<footer style="width:100%; background-color: #E9724C; text-align: center; color: #fff; padding: 15px; font-size: 11pt; position: fixed; left: 0; bottom: 0;">
+    Copyright &copy;<script>document.write(new Date().getFullYear());</script> | Created with <i class="material-icons" aria-hidden="true" style="color:#9C280F; vertical-align: middle;">favorite</i> 
+    by Tezan Sahu, Shreya Laddha, Amol Shah & Saavi Yadav
+</footer>
 </body>
 </html>

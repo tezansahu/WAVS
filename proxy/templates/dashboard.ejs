@@ -258,7 +258,7 @@ a {
 <body>
 
 <div class="heading"> 
-    <h1>Scan Results</h1>
+    <h1>WAVS Dashboard: Scan Results</h1>
     <h3>URL: <%= url %></h3>
 </div>
 
@@ -302,7 +302,7 @@ a {
         <p><i class="material-icons" style="color: yellow; ">error</i> <b>Valid (with Warnings):</b> This website has valid SSL/TLS certificate, but the issuing authority or expiry may be questionable</p>
     <% } %>
     <% if (tls_cert.result === "Invalid") { %>
-        <p><i class="material-icons" style="color: red; -webkit-text-stroke: 0.5px rgb(0, 0, 0);">dangerous</i> <b>Invalid:</b> This website does not have valid SSL/TLS certificate</p>
+        <p><i class="material-icons" style="color: rgb(214, 0, 0);">dangerous</i> <b>Invalid:</b> This website does not have valid SSL/TLS certificate</p>
     <% } %>
 
     <button id="tls_cert_details"><span class="text-white">Click here for Certificate Details</span></button> 
@@ -505,10 +505,15 @@ a {
   </div>
   <% } %>
 
-<div class="heading">
+<div class="heading" style="margin-bottom: 20px;">
     <br>
     <button id="proceed"><span><a target="_blank" style="color: #fff; text-decoration: none;" href="<%= url %>"><h2>Proceed to URL</h2></a></span></button>
 </div>
+
+<footer style="width:100%; background-color: #E9724C; text-align: center; color: #fff; padding: 15px; font-size: 11pt; left: 0; bottom: 0;">
+  Copyright &copy;<script>document.write(new Date().getFullYear());</script> | Created with <i class="material-icons" aria-hidden="true" style="color:#9C280F; vertical-align: middle;">favorite</i> 
+  by Tezan Sahu, Shreya Laddha, Amol Shah & Saavi Yadav
+</footer>
 
 <% if (locals.phishing) { %>
 <script>

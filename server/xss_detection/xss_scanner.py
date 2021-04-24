@@ -40,6 +40,11 @@ class XSSDetector:
             input_type = input_tag.attrs.get("type", "text")
             input_name = input_tag.attrs.get("name")
             inputs.append({"type": input_type, "name": input_name})
+        
+        for textarea in form.find_all("textarea"):
+            input_type = "textarea"
+            input_name = textarea.attrs.get("name")
+            inputs.append({"type": input_type, "name": input_name})
         # put everything to the resulting dictionary
         details["action"] = action
         details["method"] = method
@@ -61,7 +66,7 @@ class XSSDetector:
         inputs = form_details["inputs"]
         data = {}
         for input in inputs:
-            if input["type"] == "text" or input["type"] == "search":
+            if input["type"] == "text" or input["type"] == "search" or input["type"] == "textarea":
                 input["value"] = value
             input_name = input.get("name")
             input_value = input.get("value")
